@@ -21,7 +21,9 @@ export default new Vuex.Store({
     fetchUsers({ commit })  {  
       return new Promise((resolve, reject) =>  {     
         axios.get('https://jsonplaceholder.typicode.com/todos/').then(function (response) {
-          console.log('Vuex', response.data);
+          response.data.forEach(function (value, key) {
+            value.order = key;
+          });
           commit("FETCH_USERS", response.data)
           resolve()
         })

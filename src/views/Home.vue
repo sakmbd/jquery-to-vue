@@ -15,14 +15,16 @@
     <p id="loading-error" class="error">Error: Unable to load TODO list!</p>
     <p class="sort-btns">
       Sort by:
-      <button id="sort-by-id" class="selected">ID</button>
-      <button id="sort-by-order">Order</button>
-      <button id="sort-by-random">Random</button>
+      <button id="sort-by-id" @click="sortBy('id')" class="selected">ID</button>
+      <button id="sort-by-order" @click="sortBy('order')">Order</button>
+      <button id="sort-by-random" @click="sortBy('shuffle')">Random</button>
     </p>
 
     <!-- TODO List to Populate -->
     <ul id="todo-list">
-      <li v-for="user in users" :key="user.id">{{ user.title }}</li>
+      <li v-for="user in users" :key="user.id">
+        <i class="fas" :class="{ 'fa-times': user.completed==false, 'fa-check': user.completed==true }"></i> {{ user.title }}
+      </li>
     </ul>
 
     <div id="todo-details">Click a TODO to render details</div>
@@ -40,6 +42,14 @@ export default {
     this.$store.dispatch("fetchUsers").then(() => {
       this.users = this.$store.getters.getUsers
     });
+    console.log(this.users);
   },
+  methods: {
+    sortBy(sorter) {
+      if(sorter == 'id') {
+        this.users.sort((a, b) => a.id > b.id);
+      }
+    }
+  }
 }
 </script>
