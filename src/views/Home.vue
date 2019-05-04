@@ -22,7 +22,7 @@
 
     <!-- TODO List to Populate -->
     <ul id="todo-list">
-      <li v-for="user in users" :key="user.id">
+      <li v-for="user in this.$store.state.users" :key="user.id">
         <i class="fas" :class="{ 'fa-times': user.completed==false, 'fa-check': user.completed==true }"></i> {{ user.title }}
       </li>
     </ul>
@@ -40,15 +40,13 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchUsers").then(() => {
-      this.users = this.$store.getters.getUsers
+      // this.users = this.$store.getters.getUsers
+      console.log(this.$store.getters.getUsers);
     });
-    console.log(this.users);
   },
   methods: {
     sortBy(sorter) {
-      if(sorter == 'id') {
-        this.users.sort((a, b) => a.id > b.id);
-      }
+      this.$store.dispatch("sortUsers", sorter)
     }
   }
 }
