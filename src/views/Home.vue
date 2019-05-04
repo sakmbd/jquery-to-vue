@@ -11,8 +11,8 @@
       </li>
       <li>Click TODO to see TODO details</li>
     </ul>
-
     <p id="loading-error" class="error">Error: Unable to load TODO list!</p>
+
     <p class="sort-btns">
       Sort by:
       <button id="sort-by-id" @click="sortBy('id')" :class="{selected:active == 'id'}">ID</button>
