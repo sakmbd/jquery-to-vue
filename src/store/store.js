@@ -8,7 +8,7 @@ export default new Vuex.Store({
     users: []
   },
   getters: {
-    getUsers: state => {
+    users: state => {
       return state.users
     }
   },

@@ -15,38 +15,54 @@
     <p id="loading-error" class="error">Error: Unable to load TODO list!</p>
     <p class="sort-btns">
       Sort by:
-      <button id="sort-by-id" @click="sortBy('id')" class="selected">ID</button>
-      <button id="sort-by-order" @click="sortBy('order')">Order</button>
-      <button id="sort-by-random" @click="sortBy('shuffle')">Random</button>
+      <button id="sort-by-id" @click="sortBy('id')" :class="{selected:active == 'id'}">ID</button>
+      <button id="sort-by-order" @click="sortBy('order')" :class="{selected:active == 'order'}">Order</button>
+      <button id="sort-by-random" @click="sortBy('shuffle')" :class="{selected:active == 'shuffle'}">Random</button>
     </p>
 
     <!-- TODO List to Populate -->
-    <ul id="todo-list">
-      <li v-for="user in this.$store.state.users" :key="user.id">
+    <ul id="todo-list" class="ui-sortable">
+      <li v-for="user in users" :key="user.id" class="ui-state-default" @click="showUserInfo(user.id)">
         <i class="fas" :class="{ 'fa-times': user.completed==false, 'fa-check': user.completed==true }"></i> {{ user.title }}
       </li>
     </ul>
 
-    <div id="todo-details">Click a TODO to render details</div>
+    <!-- user info components -->
+    <user-info :user="singleUser"></user-info>
+
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import UserInfo from '@/components/UserInfo.vue'
 export default {
-  data() {
+  data () {
     return {
-      users: []
+      active: 'id',
+      singleUser: []
     }
   },
-  created() {
-    this.$store.dispatch("fetchUsers").then(() => {
-      // this.users = this.$store.getters.getUsers
-      console.log(this.$store.getters.getUsers);
-    });
+  components: {
+    UserInfo
+  },
+  computed: {
+    ...mapGetters([
+      'users',
+    ])
+  },
+  created () {
+    this.$store.dispatch('fetchUsers').then(() => {
+      console.log('Dispatch the state action method')
+    })
   },
   methods: {
-    sortBy(sorter) {
-      this.$store.dispatch("sortUsers", sorter)
+    sortBy (sorter) {
+      this.active = sorter
+      this.$store.dispatch('sortUsers', sorter)
+    },
+    showUserInfo(id) {
+      this.singleUser = this.users.filter(obj => obj.id === id);
     }
   }
 }
