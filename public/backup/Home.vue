@@ -20,17 +20,11 @@
       <button id="sort-by-random" @click="sortBy('shuffle')" :class="{selected:active == 'shuffle'}">Random</button>
     </p>
 
+    <!-- TODO List to Populate -->
     <ul id="todo-list" class="ui-sortable">
-      <draggable
-        v-model='users'
-        :disabled="!enabled"
-        ghost-class="ghost"
-        @start="dragging = true"
-        @end="dragging = false">
-        <li v-for="user in users" :key="user.id" class="ui-state-default" @click="showUserInfo(user.id)">
-          <i class="fas" :class="{ 'fa-times': user.completed==false, 'fa-check': user.completed==true }"></i> {{ user.title }}
-        </li>
-      </draggable>
+      <li v-for="user in users" :key="user.id" class="ui-state-default" @click="showUserInfo(user.id)">
+        <i class="fas" :class="{ 'fa-times': user.completed==false, 'fa-check': user.completed==true }"></i> {{ user.title }}
+      </li>
     </ul>
 
     <!-- user info components -->
@@ -40,31 +34,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import UserInfo from '@/components/UserInfo.vue'
-import draggable from 'vuedraggable'
 export default {
   data () {
     return {
       active: 'id',
-      singleUser: [],
-      enabled: true,
+      singleUser: []
     }
   },
   components: {
-    UserInfo,
-    draggable
+    UserInfo
   },
   computed: {
-    users: {
-      get() {
-        return this.$store.state.users
-      },
-      set(value) {
-        console.log(value)
-        this.$store.dispatch('updateList', value)
-      }
-    }
+    ...mapGetters([
+      'users',
+    ])
   },
   created () {
     this.$store.dispatch('fetchUsers').then(() => {
@@ -82,13 +67,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.buttons {
-  margin-top: 35px;
-}
-
-.ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
-}
-</style>

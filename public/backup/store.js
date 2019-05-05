@@ -24,9 +24,6 @@ export default new Vuex.Store({
       } else {
         state.users.sort((a, b) => 0.5 - Math.random())
       }
-    },
-    UPDATE_USERS(state, users) {
-      state.users = users
     }
   },
   actions: {
@@ -43,12 +40,6 @@ export default new Vuex.Store({
     },
     sortUsers(context, payload) {
       context.commit("SORT_USERS", payload)
-    },
-    updateList(context, payload) {
-      payload.forEach(function (value, key) {
-        value.order = key;
-      });
-      context.commit("UPDATE_USERS", payload)
     }
   }
 })

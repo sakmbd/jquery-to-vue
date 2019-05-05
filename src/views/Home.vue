@@ -13,29 +13,32 @@
     </ul>
     <p id="loading-error" class="error">Error: Unable to load TODO list!</p>
 
+    <!-- Button section to show sorting button -->
     <p class="sort-btns">
       Sort by:
-      <button id="sort-by-id" @click="sortBy('id')" :class="{selected:active == 'id'}">ID</button>
-      <button id="sort-by-order" @click="sortBy('order')" :class="{selected:active == 'order'}">Order</button>
-      <button id="sort-by-random" @click="sortBy('shuffle')" :class="{selected:active == 'shuffle'}">Random</button>
+      <button @click="sortBy('id')" :class="{selected:active == 'id'}">ID</button>
+      <button @click="sortBy('order')" :class="{selected:active == 'order'}">Order</button>
+      <button @click="sortBy('shuffle')" :class="{selected:active == 'shuffle'}">Random</button>
     </p>
 
-    <!-- TODO List to Populate -->
+    <!-- Useres list section -->
     <ul id="todo-list" class="ui-sortable">
-      <li v-for="user in users" :key="user.id" class="ui-state-default" @click="showUserInfo(user.id)">
-        <i class="fas" :class="{ 'fa-times': user.completed==false, 'fa-check': user.completed==true }"></i> {{ user.title }}
-      </li>
+      <draggable v-model='users'>
+        <li v-for="user in users" :key="user.id" class="ui-state-default" @click="showUserInfo(user.id)">
+          <i class="fas" :class="{'fa-times': user.completed==false, 'fa-check': user.completed==true}"></i> {{ user.title }}
+        </li>
+      </draggable>
     </ul>
 
-    <!-- user info components -->
+    <!-- Single user info components -->
     <user-info :user="singleUser"></user-info>
 
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import UserInfo from '@/components/UserInfo.vue'
+import draggable from 'vuedraggable'
 export default {
   data () {
     return {
@@ -44,12 +47,18 @@ export default {
     }
   },
   components: {
-    UserInfo
+    UserInfo,
+    draggable
   },
   computed: {
-    ...mapGetters([
-      'users',
-    ])
+    users: {
+      get () {
+        return this.$store.getters.users
+      },
+      set (value) {
+        this.$store.dispatch('updateList', value)
+      }
+    }
   },
   created () {
     this.$store.dispatch('fetchUsers').then(() => {
@@ -61,8 +70,8 @@ export default {
       this.active = sorter
       this.$store.dispatch('sortUsers', sorter)
     },
-    showUserInfo(id) {
-      this.singleUser = this.users.filter(obj => obj.id === id);
+    showUserInfo (id) {
+      this.singleUser = this.users.filter(obj => obj.id === id)
     }
   }
 }

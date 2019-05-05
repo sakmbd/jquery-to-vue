@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interview Exercise: Legacy jQuery App - Make me VueJS!</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">  
+  <link rel="stylesheet" href="static/css/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+  <script src="static/js/app.js"></script>
+</head>
+<body>
+
+  <h1>To Do List Example</h1>
+  <p>Rewrite the following legacy jQuery application in Vue using a Vuex state management (<a href="https://vuex.vuejs.org/" target="_new">https://vuex.vuejs.org/</a>)</p>
+  <p>Features:</p>
+  <ul>
+    <li>Render List of TODOs retrieved from REST API</li>
+    <li>Sort list of TODOs</li>
+    <li>Order list of TODOs by dragging vertically - drag event updates the order property of all items in the list</li>
+    <li>Click TODO to see TODO details</li>
+  </ul>
+  
+  <p id="loading-error" class="error">Error: Unable to load TODO list!</p>
+  <p class="sort-btns">
+    Sort by: 
+    <button id="sort-by-id" class="selected">ID</button>
+    <button id="sort-by-order">Order</button>
+    <button id="sort-by-random">Random</button>
+  </p>
+
+  <!-- TODO List to Populate -->
+  <ul id="todo-list"></ul>
+
+  <div id="todo-details">Click a TODO to render details</div>
+
+</body>
+</html>
